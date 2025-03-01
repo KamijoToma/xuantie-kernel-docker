@@ -1,6 +1,7 @@
 #!/bin/bash
 # Disabled for now
 # set -e
+source /etc/profile.d/toolchain.sh
 mkdir -p /kernel/rootfs/boot
 git clone --depth=1 -b th1520-lts https://github.com/revyos/th1520-linux-kernel.git /kernel/thead-kernel
 cd /kernel/thead-kernel
