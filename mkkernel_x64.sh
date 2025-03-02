@@ -1,13 +1,11 @@
 #!/bin/bash
-# Disabled for now
-# set -e
+set -e
 source /etc/profile.d/toolchain.sh
-mkdir -p /kernel/rootfs/boot
+mkdir -p /output
 git clone --depth=1 -b th1520-lts https://github.com/revyos/th1520-linux-kernel.git /kernel/thead-kernel
 cd /kernel/thead-kernel
-make CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv revyos_defconfig
-make CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv -j$(nproc)
-make CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv -j$(nproc) dtbs
-# Disabled for now
-# make CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv INSTALL_MOD_PATH=../rootfs/ modules_install -j$(nproc)
-make CROSS_COMPILE=riscv64-unknown-linux-gnu- ARCH=riscv INSTALL_PATH=../rootfs/boot zinstall -j$(nproc)
+make CROSS_COMPILE=riscv64-linux-gnu- ARCH=riscv revyos_defconfig
+export KDEB_PKGVERSION="$(make kernelversion)-$(date "+%Y.%m.%d.%H.%M")+$(git rev-parse --short HEAD)"
+make CROSS_COMPILE=riscv64-linux-gnu- ARCH=riscv -j$(nproc) bindeb-pkg LOCALVERSION="-th1520"
+make CROSS_COMPILE=riscv64-linux-gnu- ARCH=riscv -j$(nproc) dtbs
+cp /kernel/*.deb /output/
