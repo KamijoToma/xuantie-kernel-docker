@@ -33,8 +33,9 @@ RUN export TOOLCHAIN_DIR=$(find /opt -maxdepth 1 -type d -name "Xuantie*" | head
 ENV CROSS_COMPILE=riscv64-unknown-linux-gnu-
 ENV ARCH=riscv
 
-# Copy mkkernel.sh to /kernel
-COPY mkkernel.sh /kernel/mkkernel.sh
+# Copy mkkernel.sh to /kernel based on architecture
+COPY mkkernel_x64.sh /kernel/mkkernel_x64.sh
+COPY mkkernel_riscv64.sh /kernel/mkkernel_riscv64.sh
 
 # Set working directory
 WORKDIR /kernel
