@@ -7,8 +7,11 @@ ARG TOOLCHAIN_VERSION=14
 ARG TOOLCHAIN_URL_V3=https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1732863205852/Xuantie-900-gcc-linux-6.6.0-glibc-x86_64-V3.0.1-20241120.tar.gz
 ARG TOOLCHAIN_URL_V2=https://occ-oss-prod.oss-cn-hangzhou.aliyuncs.com/resource//1663142514282/Xuantie-900-gcc-linux-5.10.4-glibc-x86_64-V2.6.1-20220906.tar.gz
 
-# Install required packages
-RUN apt update && apt install -y gdisk dosfstools build-essential \
+# Install required packages and select the fastest mirror
+RUN apt update && apt install -y software-properties-common \
+    && add-apt-repository -y ppa:apt-fast/stable \
+    && apt update && apt install -y apt-fast \
+    && apt-fast install -y gdisk dosfstools build-essential \
     libncurses-dev gawk flex bison openssl libssl-dev tree dkms libelf-dev libudev-dev \
     libpci-dev libiberty-dev autoconf device-tree-compiler git wget bc python3 \
     libmpc-dev cpio debhelper rsync pahole
